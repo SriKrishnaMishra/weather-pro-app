@@ -1,10 +1,26 @@
 // Centralized image import utility
 const importImage = (imageName) => {
   try {
-    return require(`../assets/images/${imageName}`).default;
+    // Try multiple import strategies
+    const importPaths = [
+      `../assets/images/${imageName}`,
+      `../../assets/images/${imageName}`,
+      `./assets/images/${imageName}`
+    ];
+
+    for (const path of importPaths) {
+      try {
+        return require(path).default;
+      } catch (innerError) {
+        console.warn(`Failed to import image from path: ${path}`, innerError);
+      }
+    }
+
+    // If all import attempts fail, return a fallback
+    console.error(`Could not import image: ${imageName}`);
+    return 'path/to/default/image.jpg';
   } catch (error) {
-    console.error(`Failed to import image: ${imageName}`, error);
-    // Fallback to a default image or return a placeholder
+    console.error(`Unexpected error importing image: ${imageName}`, error);
     return 'path/to/default/image.jpg';
   }
 };

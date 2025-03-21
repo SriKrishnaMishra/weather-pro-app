@@ -1,39 +1,39 @@
 import React from 'react';
 
-// Import images with explicit paths
-import FogImage from '../assets/images/Fog.jpg';
-import SnowImage from '../assets/images/Snow.jpg';
-
-// Fallback image in case of import failure
-const DefaultImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
-
 const BackgroundLayout = ({ weatherType, children }) => {
-  const getBackgroundImage = () => {
-    try {
-      switch(weatherType) {
-        case 'Fog':
-          return FogImage || DefaultImage;
-        case 'Snow':
-          return SnowImage || DefaultImage;
-        default:
-          return DefaultImage;
-      }
-    } catch (error) {
-      console.error('Error selecting background image:', error);
-      return DefaultImage;
-    }
+  const getBackgroundImageUrl = () => {
+    // Using relative paths from public folder
+    const type = weatherType?.toLowerCase() || 'fog';
+    return `${process.env.PUBLIC_URL}/images/${type}.jpg`;
+  };
+
+  const containerStyle = {
+    backgroundImage: `url("${getBackgroundImageUrl()}")`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh',
+    width: '100%',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    zIndex: -1,
+    backgroundColor: '#f0f2f5' // Fallback color
+  };
+
+  const contentStyle = {
+    position: 'relative',
+    zIndex: 1,
+    minHeight: '100vh',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column'
   };
 
   return (
-    <div 
-      style={{
-        backgroundImage: `url(${getBackgroundImage()})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        minHeight: '100vh'
-      }}
-    >
-      {children}
+    <div style={containerStyle}>
+      <div style={contentStyle}>
+        {children}
+      </div>
     </div>
   );
 };

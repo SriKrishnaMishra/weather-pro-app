@@ -1,22 +1,15 @@
 import React from 'react';
-import FogImage from '../assets/images/Fog.jpg';
-import SnowImage from '../assets/images/Snow.jpg';
+// Import images directly
+const FogImage = require('../assets/images/Fog.jpg').default;
+const SnowImage = require('../assets/images/Snow.jpg').default;
 
 const BackgroundLayout = ({ weatherType, children }) => {
   const getBackgroundImage = () => {
-    try {
-      switch(weatherType) {
-        case 'Fog':
-          return FogImage;
-        case 'Snow':
-          return SnowImage;
-        default:
-          return FogImage;
-      }
-    } catch (error) {
-      console.error('Error loading background image:', error);
-      return '';
-    }
+    const images = {
+      Fog: FogImage,
+      Snow: SnowImage
+    };
+    return images[weatherType] || images.Fog;
   };
 
   const containerStyle = {
@@ -29,7 +22,7 @@ const BackgroundLayout = ({ weatherType, children }) => {
     top: 0,
     left: 0,
     zIndex: -1,
-    backgroundColor: '#f0f2f5' // Fallback background color
+    backgroundColor: '#f0f2f5' // Fallback color
   };
 
   const contentStyle = {

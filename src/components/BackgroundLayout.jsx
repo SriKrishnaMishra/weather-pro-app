@@ -1,14 +1,26 @@
 import React from 'react';
+import FogImage from '../assets/images/Fog.jpg';
+import SnowImage from '../assets/images/Snow.jpg';
 
 const BackgroundLayout = ({ weatherType, children }) => {
-  const getBackgroundImageUrl = () => {
-    // Using relative paths from public folder
-    const type = weatherType?.toLowerCase() || 'fog';
-    return `${process.env.PUBLIC_URL}/images/${type}.jpg`;
+  const getBackgroundImage = () => {
+    try {
+      switch(weatherType) {
+        case 'Fog':
+          return FogImage;
+        case 'Snow':
+          return SnowImage;
+        default:
+          return FogImage;
+      }
+    } catch (error) {
+      console.error('Error loading background image:', error);
+      return '';
+    }
   };
 
   const containerStyle = {
-    backgroundImage: `url("${getBackgroundImageUrl()}")`,
+    backgroundImage: `url(${getBackgroundImage()})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     minHeight: '100vh',
@@ -17,7 +29,7 @@ const BackgroundLayout = ({ weatherType, children }) => {
     top: 0,
     left: 0,
     zIndex: -1,
-    backgroundColor: '#f0f2f5' // Fallback color
+    backgroundColor: '#f0f2f5' // Fallback background color
   };
 
   const contentStyle = {

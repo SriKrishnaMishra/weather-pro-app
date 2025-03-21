@@ -1,20 +1,16 @@
 import React from 'react';
+import FogImage from '../assets/images/Fog.jpg';
+import SnowImage from '../assets/images/Snow.jpg';
 
 const BackgroundLayout = ({ weatherType, children }) => {
   const getBackgroundImage = () => {
-    try {
-      switch(weatherType) {
-        case 'Fog':
-          return require('../assets/images/Fog.jpg').default;
-        case 'Snow':
-          return require('../assets/images/Snow.jpg').default;
-        default:
-          return require('../assets/images/Fog.jpg').default; // Default background
-      }
-    } catch (error) {
-      console.error('Error loading background image:', error);
-      // Fallback to a default image or placeholder
-      return 'path/to/default/image.jpg';
+    switch(weatherType) {
+      case 'Fog':
+        return FogImage;
+      case 'Snow':
+        return SnowImage;
+      default:
+        return FogImage; // Default background
     }
   };
 

@@ -1,16 +1,26 @@
 import React from 'react';
+
+// Import images with explicit paths
 import FogImage from '../assets/images/Fog.jpg';
 import SnowImage from '../assets/images/Snow.jpg';
 
+// Fallback image in case of import failure
+const DefaultImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+
 const BackgroundLayout = ({ weatherType, children }) => {
   const getBackgroundImage = () => {
-    switch(weatherType) {
-      case 'Fog':
-        return FogImage;
-      case 'Snow':
-        return SnowImage;
-      default:
-        return FogImage; // Default background
+    try {
+      switch(weatherType) {
+        case 'Fog':
+          return FogImage || DefaultImage;
+        case 'Snow':
+          return SnowImage || DefaultImage;
+        default:
+          return DefaultImage;
+      }
+    } catch (error) {
+      console.error('Error selecting background image:', error);
+      return DefaultImage;
     }
   };
 
